@@ -130,6 +130,7 @@ public class FullscreenActivity extends AppCompatActivity {
         // Hide UI first
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+//            d;
             actionBar.hide();
         }
         mControlsView.setVisibility(View.GONE);
