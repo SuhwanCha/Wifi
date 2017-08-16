@@ -11,7 +11,26 @@ import org.json.*;
 
 public class api {
 
-    private static String getHTML(String urlToRead) throws Exception {
+    private double lat;
+    private double longt;
+
+    public api(){
+        this.lat = lat;
+        this.longt = longt;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public void setLongt(double longt) {
+        this.longt = longt;
+    }
+
+
+
+
+    private String getHTML(String urlToRead) throws Exception {
         StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -25,7 +44,7 @@ public class api {
         return result.toString();
     }
 
-    public static ArrayList parseData() throws Exception {
+    public ArrayList parseData() throws Exception {
         ArrayList<HashMap> list = new ArrayList();
 
         String jsons = (getHTML("http://asdqwe2e.gdb.kr/wifi.json"));
@@ -47,6 +66,26 @@ public class api {
             list.add(map);
         }
         return list;
+    }
+
+    private double getDistance(double lat, double longt){
+        double theta = longt - this.longt;
+        double dist = Math.sin(deg2rad(lat)) * Math.sin(deg2rad(this.lat)) + Math.cos(deg2rad(lat))
+                * Math.cos(deg2rad(this.lat)) * Math.cos(deg2rad(theta));
+
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        dist = dist * 1609.344;
+        return (dist);
+    }
+
+    private static double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private static double rad2deg(double rad) {
+        return (rad * 180 / Math.PI);
     }
 
 }
