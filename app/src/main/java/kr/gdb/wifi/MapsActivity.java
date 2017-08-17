@@ -83,7 +83,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
             }
         }.start();
-//        ?? 아니 왜 쓰레드를 안쓰면 에러가.
 
 
         }
