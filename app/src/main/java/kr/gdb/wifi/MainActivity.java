@@ -13,14 +13,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
-
+    api api;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        api = new api();
         Intent it = new Intent(this, MapsActivity.class);
         startActivity(it);
-
     }
 
     private void printHashKey(){
@@ -37,4 +37,19 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+    class updateLocate extends Thread{
+        @Override
+        public void run() {
+//        api.setLat();
+//        api.setLongt();
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

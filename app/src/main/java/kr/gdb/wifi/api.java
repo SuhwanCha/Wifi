@@ -30,7 +30,7 @@ public class api {
 
 
 
-    private String getHTML(String urlToRead) throws Exception {
+    public String getHTML(String urlToRead) throws Exception {
         StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -44,7 +44,7 @@ public class api {
         return result.toString();
     }
 
-    public ArrayList parseData() throws Exception {
+    public ArrayList<HashMap> parseData() throws Exception {
         ArrayList<HashMap> list = new ArrayList();
 
         String jsons = (getHTML("http://asdqwe2e.gdb.kr/wifi.json"));
@@ -57,18 +57,18 @@ public class api {
             String addr = jsonobject.getString("REFINE_ROADNM_ADDR");
             String logt = jsonobject.getString("REFINE_WGS84_LOGT");
             String lat = jsonobject.getString("REFINE_WGS84_LAT");
-            HashMap<String, String> map = new HashMap<>();
+            HashMap<String, Object> map = new HashMap<>();
             map.put("name", name);
             map.put("tel", tel);
             map.put("addr", addr);
-            map.put("logt", logt);
-            map.put("lat", lat);
+            map.put("longt", (Object)logt);
+            map.put("lat", (Object)lat);
             list.add(map);
         }
         return list;
     }
 
-    private double getDistance(double lat, double longt){
+    public double getstance(double lat, double longt){
         double theta = longt - this.longt;
         double dist = Math.sin(deg2rad(lat)) * Math.sin(deg2rad(this.lat)) + Math.cos(deg2rad(lat))
                 * Math.cos(deg2rad(this.lat)) * Math.cos(deg2rad(theta));

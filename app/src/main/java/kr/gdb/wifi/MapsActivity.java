@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static android.R.id.list;
 
@@ -31,7 +32,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         loc = new api();
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -48,36 +48,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    ArrayList<HashMap> list = null;
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         dimigo = new LatLng(37.341893,126.8315179);
-        mMap.addMarker(new MarkerOptions().position(dimigo).title("asd"))
-                .setIcon(BitmapDescriptorFactory.fromResource((R.drawable.dimigo)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dimigo, 15));
-        try {
-            addMarker(loc.parseData());
-        } catch (Exception e) {
-            e.printStackTrace();
+        mMap.addMarker(new MarkerOptions().position(dimigo).title("한국디지털미디어고등학교"))
+        .setSnippet("경기도 안산시 단원구 사세충열로 94");
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dimigo, 16));
+
+        new Thread() {
+            public void run() {
+                try {
+                    list = loc.parseData();
+                    System.out.println(list.size());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(int i=1; i<list.size(); i++) {
+                            HashMap<String, Object> a = list.get(i);
+                            System.out.println();
+                            LatLng temp = new LatLng(Double.parseDouble((String)a.get("lat")),
+                                    Double.parseDouble((String)a.get("longt")));
+                            Marker temps = mMap.addMarker(new MarkerOptions().position(temp).title((String) list.get(i).get("name")));
+                            temps.setSnippet((String)list.get(i).get("addr"));
+                            temps.setTag(i);
+
+
+                        }
+                    }
+                });
+            }
+        }.start();
+//        ?? 아니 왜 쓰레드를 안쓰면 에러가.
+
+
         }
 
+    public boolean onMarkerClick (Marker marker){
+        int index = (int) marker.getTag();
+        return true;
     }
 
-    public Bitmap resizeMapIcons(String iconName, int width, int height){
-        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable", getPackageName()));
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
-        return resizedBitmap;
-    }
-
-
-    private void addMarker(ArrayList<HashMap> list) {
-        ArrayList<LatLng> markers;
-        for(int i=0; i<list.size(); i++){
-            LatLng temp = new LatLng((double)(list.get(i).get("lat"))
-                    ,(double)list.get(i).get("longt"));
-            mMap.addMarker(new MarkerOptions().position(temp).title((String)list.get(i).get("name")));
-        }
-    }
 
 
 }
+
