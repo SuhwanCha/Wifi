@@ -1,0 +1,34 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:selectable="false"
+        android:enabled="true"
+        android:key="example_key1"
+        android:icon="@drawable/dimigo"
+        android:title="개발자"
+        android:summary="Github : \@SuhwanCha \@junwonjunwon" />
+
+    <Preference
+        android:selectable="false"
+        android:enabled="true"
+        android:key="example_key2"
+        android:title="저작권"
+        android:summary="Copyright 2017 gdb.kr Co. all reserved"
+   />
+
+    <Preference
+        android:selectable="false"
+        android:enabled="true"
+        android:key="example_ke3y"
+        android:title="데이터 출처"
+        android:summary="공공데이터 포털" />
+
+    <Preference
+        android:selectable="false"
+        android:enabled="true"
+        android:key="email"
+        android:title="개발자에게 메일 보내기"
+        android:summary="suhwan@gdb.kr" />
+
+
+
+</PreferenceScreen>
